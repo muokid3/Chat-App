@@ -10,19 +10,27 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.dm.berxley.chatapp.screens.Screen
+import com.dm.berxley.chatapp.screens.SignInScreen
+import com.dm.berxley.chatapp.screens.SignUpScreen
 import com.dm.berxley.chatapp.ui.theme.ChatAppTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val navController = rememberNavController()
             ChatAppTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    NavigationGraph(navController = navController)
                 }
             }
         }
@@ -30,17 +38,16 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+fun NavigationGraph(navController: NavHostController) {
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    ChatAppTheme {
-        Greeting("Android")
+    NavHost(navController = navController, startDestination = Screen.SignUpScreen.route) {
+
+        composable(Screen.SignUpScreen.route) {
+            SignUpScreen { navController.navigate(Screen.LoginScreen.route) }
+        }
+        composable(Screen.LoginScreen.route){
+            SignInScreen { navController.navigate(Screen.SignUpScreen.route) }
+        }
+
     }
 }
