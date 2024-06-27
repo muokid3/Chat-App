@@ -28,5 +28,11 @@ class AuthViewModel: ViewModel() {
         }
     }
 
+    fun login(email: String, password: String){
+        viewModelScope.launch {
+            _authResult.value = userRepository.login(email,password)
+        }
+    }
+
 
 }

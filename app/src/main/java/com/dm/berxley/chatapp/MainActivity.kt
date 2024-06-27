@@ -1,6 +1,7 @@
 package com.dm.berxley.chatapp
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,6 +10,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -33,7 +35,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    NavigationGraph(navController = navController, authViewModel= authViewModel)
+                    NavigationGraph(navController = navController, authViewModel = authViewModel)
                 }
             }
         }
@@ -47,12 +49,16 @@ fun NavigationGraph(navController: NavHostController, authViewModel: AuthViewMod
 
         composable(Screen.SignUpScreen.route) {
             SignUpScreen(
-                authViewModel= authViewModel,
+                authViewModel = authViewModel,
                 onNavigateToLogin = { navController.navigate(Screen.LoginScreen.route) })
 
         }
-        composable(Screen.LoginScreen.route){
-            SignInScreen { navController.navigate(Screen.SignUpScreen.route) }
+        composable(Screen.LoginScreen.route) {
+            SignInScreen(
+                authViewModel = authViewModel,
+                onNavigateToSignUp = { navController.navigate(Screen.SignUpScreen.route) },
+                onSignInSuccess = { navController.navigate(Screen.ChatRoomsScreen.route) }
+            )
         }
 
     }
