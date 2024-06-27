@@ -28,9 +28,11 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dm.berxley.chatapp.R
+import com.dm.berxley.chatapp.viewmodels.AuthViewModel
 
 @Composable
 fun SignUpScreen(
+    authViewModel: AuthViewModel,
     onNavigateToLogin: () -> Unit
 ) {
 
@@ -109,6 +111,7 @@ fun SignUpScreen(
                 .fillMaxWidth()
                 .padding(top = 8.dp),
             onClick = {
+                authViewModel.signUp(email, password, firstName, lastName)
                 email = ""
                 password = ""
                 firstName = ""
@@ -133,5 +136,5 @@ fun SignUpScreen(
 @Preview(showBackground = true)
 @Composable
 fun SignUpScreenPrev() {
-    SignUpScreen({})
+    SignUpScreen(AuthViewModel(),{})
 }
