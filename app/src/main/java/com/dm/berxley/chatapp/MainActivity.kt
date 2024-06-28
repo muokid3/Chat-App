@@ -17,6 +17,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.dm.berxley.chatapp.screens.ChatRoomListScreen
 import com.dm.berxley.chatapp.screens.Screen
 import com.dm.berxley.chatapp.screens.SignInScreen
 import com.dm.berxley.chatapp.screens.SignUpScreen
@@ -59,6 +60,10 @@ fun NavigationGraph(navController: NavHostController, authViewModel: AuthViewMod
                 onNavigateToSignUp = { navController.navigate(Screen.SignUpScreen.route) },
                 onSignInSuccess = { navController.navigate(Screen.ChatRoomsScreen.route) }
             )
+        }
+
+        composable(Screen.ChatRoomsScreen.route){
+            ChatRoomListScreen()
         }
 
     }
