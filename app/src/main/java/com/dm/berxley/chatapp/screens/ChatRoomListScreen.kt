@@ -1,6 +1,5 @@
 package com.dm.berxley.chatapp.screens
 
-import android.widget.Space
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -41,7 +40,8 @@ import com.dm.berxley.chatapp.viewmodels.ChatRoomsViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatRoomListScreen(
-    roomViewModel: ChatRoomsViewModel = viewModel()
+    roomViewModel: ChatRoomsViewModel = viewModel(),
+    onJoinClicked: (ChatRoom) -> Unit
 ) {
     val chatRooms by roomViewModel.rooms.observeAsState(emptyList())
 
@@ -60,8 +60,8 @@ fun ChatRoomListScreen(
 
 
         LazyColumn {
-            items(chatRooms){
-                RoomItem(chatRoom = it)
+            items(chatRooms) { room ->
+                RoomItem(chatRoom = room, onJoinClicked = { onJoinClicked(room) })
             }
         }
 
@@ -154,25 +154,34 @@ fun ChatRoomListScreen(
 
 
 @Composable
-fun RoomItem(chatRoom: ChatRoom) {
-    Row(modifier = Modifier
-        .fillMaxWidth()
-        .padding(8.dp),
+fun RoomItem(
+    chatRoom: ChatRoom,
+    onJoinClicked: (ChatRoom) -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically) {
+        verticalAlignment = Alignment.CenterVertically
+    ) {
 
         Text(
             text = chatRoom.name,
             fontSize = 16.sp,
-            fontWeight = FontWeight.Normal)
+            fontWeight = FontWeight.Normal
+        )
 
-        OutlinedButton(onClick = { /*TODO*/ }) {
+        OutlinedButton(onClick = {
+            onJoinClicked(chatRoom)
+        }) {
             Text(text = "Join")
         }
     }
 }
+
 @Preview(showBackground = true)
 @Composable
 fun ChatRoomsScreenPrev() {
-    ChatRoomListScreen()
+    ChatRoomListScreen(){}
 }
